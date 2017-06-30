@@ -110,7 +110,7 @@ base/curso.json
 
 - Caso o usuário efetue login através dos campos da própria plataforma, 
 deve ser validado no banco de dados se o usuário e senha informados estão corretos. 
-A senha deve ser criptografada em MD5 gerando um HASH de 32 dígitosantes de trafegar através da API REST de login
+A senha deve ser criptografada em MD5 gerando um HASH de 32 dígitos antes de trafegar através da API REST de login
 - Se o usuário optar for fazer login com o Gmail, deverá ser utilizada a API de login do Google. 
 - Se o login obtiver sucesso, liberar o acesso do usuário à tela de apresentação de cursos 
 caso contrário apresentar mensagem para o usuário na tela de login
