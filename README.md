@@ -165,5 +165,5 @@ com seu currículo, pretensão salarial e o link do seu pull request
 __
 
 Qualquer dúvida entre em contato com nossa equipe pelo e-mail vagasulbrati@ulbra.br 
-com o assunto “Dúvidas prova de seleção para Analista de Sistemas”.
+com o assunto “Dúvidas atividade de seleção para Analista de Sistemas”.
 
