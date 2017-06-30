@@ -1,0 +1,41 @@
+.m-t-20{
+    margin-top: 20px !important;
+}
+
+.m-t-10{
+    margin-top: 10px !important;
+}
+
+.center{
+    margin:0 auto;
+    text-align: center;
+}
+
+.f-r{
+    float: right;
+}
+
+.cx-login {
+    margin-top: 100px;
+}
+
+.btn-login {
+    padding-top: 9px;
+}
+
+.curso {
+    font-size: 30px;
+    color: #e8e8e8;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+    border: 1px solid #e8e8e8;
+    margin-top: 15px;
+    padding: 20px;
+}
+
+.logo-topo {
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.2);
+}
