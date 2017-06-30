@@ -50,25 +50,19 @@ Faça o fork do desafio
 ### Layout
 
 <p align="center">
-  <a href="http://www.ulbra.br">
-      <img src="http://i.imgur.com/MROnFoh.jpg" alt="Tela de login" width="400px"/>    
-  </a>
+  <img src="http://i.imgur.com/MROnFoh.jpg" alt="Tela de login" width="400px"/>      
   <br>
   Tela de login
   <br>
   <br>
-  <br>
-  <a href="http://www.ulbra.br">
-    <img src="http://i.imgur.com/BQLjiiK.jpg" alt="Tela de cadastro de usuário" width="400px"/>
-  </a>
+  <br>  
+  <img src="http://i.imgur.com/BQLjiiK.jpg" alt="Tela de cadastro de usuário" width="400px"/>  
   <br>
   Tela de cadastro de usuário
   <br>
   <br>
-  <br>
-  <a href="http://www.ulbra.br">
-      <img src="http://i.imgur.com/eB6XDlL.jpg" alt="Tela de cadastro de usuário" width="400px"/>
-  </a>
+  <br>  
+  <img src="http://i.imgur.com/eB6XDlL.jpg" alt="Tela de cadastro de usuário" width="400px"/>  
   <br>
   Tela de apresentação de cursos
   <br>
