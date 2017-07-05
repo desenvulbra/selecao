@@ -23,12 +23,16 @@ const oracle		= require('oracledb');					// oracle driver
  * Oracle
  * Neste bloco é feita a configuração da conexão com o Banco Oracle.
  */
+const senhaOracle = process.env.PWD_ORACLE;					// pega a senha do environment
+if(!senhaOracle){											// se não encontrar a senha
+	throw new Error('Senha do Oracle não encontrada!');		// gera um erro
+}
 const knex = require('knex')({								// cria a conexão ao banco
 	client: 'oracledb',										// driver utilizado
 	connection: {											// dados da conexão
     	host        : '127.0.0.1',							// endereço do servidor
 		user        : 'anderson',							// usuário
-		password    : 'a1b2c3',								// senha
+		password    : process.env.PWD_ORACLE,				// senha
 		database    : 'xe',									// banco
     	charset     : 'utf8'								// charset
 	}
