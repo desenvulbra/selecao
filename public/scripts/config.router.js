@@ -11,7 +11,6 @@ angular.module('app')
             .state('cursos', {
                 url: '/cursos',
                 templateUrl: 'partials/cursos.html',
-                //controller: 'CursosCtrl',
                 resolve: {
                   listaCursos: ['cursosAPI', '$rootScope', function(cursosAPI, $rootScope){
                               return cursosAPI.getCursos().then(function(resp){
