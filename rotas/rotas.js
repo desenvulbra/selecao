@@ -32,11 +32,11 @@ module.exports = function (app, knex, passport) {
     app.post('/login', function(req, res, next) {
 	    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login'}, function(err, user, info) {
             if(err || !user) {
-                return res.json({erro: 'Dados de login não conferem!1' });
+                return res.json({erro: 'Dados de login não conferem!' });
             }
             return req.logIn(user, function(err) {
                 if(err) {
-                    return res.json({erro: 'Dados de login não conferem!2' });
+                    return res.json({erro: 'Dados de login não conferem!' });
                 } else {
                     req.session.passport.nome = user.NOME;
                     res.json({ sucesso: 'sim' });
