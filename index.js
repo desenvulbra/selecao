@@ -5,7 +5,6 @@ const http = require('http'); //servidor
 const express = require('express'); //framework
 const compression = require('compression'); //compressor
 const bodyParser = require('body-parser'); //body
-//const cookieParser = require('cookie-parser'); //cookies
 const md5 = require('md5'); //md5 hash
 const session = require('express-session'); //sessão
 const passport = require('passport'); //login
