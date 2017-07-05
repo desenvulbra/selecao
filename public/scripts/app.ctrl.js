@@ -13,7 +13,7 @@ angular.module('app')
         }
 
     }
-]).run([ '$rootScope', '$state', '$location', 'cursosAPI', '$transitions', function run($rootScope, $state, $location, cursosAPI, $transitions) {
+]).run([ 'cursosAPI', '$transitions', function run(cursosAPI, $transitions) {
     console.info('Anderson Bargas');
 
     $transitions.onStart({ to: 'cursos' }, function(trans) {
