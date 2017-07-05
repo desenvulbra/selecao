@@ -3,7 +3,7 @@ angular.module("app").service('authInterceptor', function($q) {
 
     service.responseError = function(response) {
         if (response.status == 401){
-            window.location = "/#login"; //$state.go('acesso.login', {});
+            window.location = "/#login"; //$state.go('login', {});
             return $q.reject(response);
         }
         if (response.status == 404){
@@ -12,4 +12,4 @@ angular.module("app").service('authInterceptor', function($q) {
         }
         
     };
-})
+});
