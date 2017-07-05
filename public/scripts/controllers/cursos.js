@@ -1,3 +1,3 @@
-app.controller('CursosCtrl', ['$rootScope', '$scope', '$stateParams', '$http', 'cursosAPI', function($rootScope, $scope, $stateParams, $http, cursosAPI) {
-    
+app.controller('CursosCtrl', ['$rootScope', '$scope', '$state', function($rootScope, $scope, $state) {
+    $scope.cursos = $rootScope.listaCursos.items;
 }]);
