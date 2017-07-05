@@ -189,7 +189,7 @@ app.get('/sair', function(req, res, next) {
 
 
 
-//app.use(function(req, res, next) { res.status(404); res.redirect('/#/404');  });
+app.use(function(req, res, next) { res.status(404); res.redirect('/#/404');  });
 /** END: ROTAS */
 
 
