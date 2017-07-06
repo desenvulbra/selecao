@@ -114,7 +114,7 @@ module.exports = function (app, knex, passport) {
     // rota para as páginas não encontradas (qualquer rota que não esteja acima)
     app.use(function(req, res, next) {
         res.status(404);                                // envia código 404 para o navegador
-        res.redirect('/#/404');                         // redireciona para a rota 404 do angular
+        res.redirect('/');                              // redireciona para o login
     });
 
 };
