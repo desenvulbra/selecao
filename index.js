@@ -112,9 +112,8 @@ app.use(passport.session());									// liga a sessão ao passport
  * Este é o código necessário para que a aplicação sirva os arquivos estáticos.
  * É também onde definimos o motor de renderização do ExpressJS.
  */
-app.use('/bower_components', express.static( path.join(__dirname,'/bower_components') ));
-['fonts','images','scripts','styles','partials'].forEach(function(part,index){ app.use('/'+part, express.static( path.join(__dirname,'public',part) )); });
-app.set('views', path.join( __dirname,'public' ));				// pasta base das views
+app.use('/', express.static( path.join(__dirname,'/dist') ));
+app.set('views', path.join( __dirname,'dist' ));				// pasta base das views
 app.set('view engine', 'html');									// seleciona a extensão das views
 app.engine('html', ejs.renderFile);								// passa os html pela engine EJS
 
