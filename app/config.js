@@ -1,9 +1,6 @@
-/*var app = angular.module('app').config(['$httpProvider', function($httpProvider) {
-    $httpProvider.interceptors.push('authInterceptor');
-}]);*/
-routing.$inject = ['$urlRouterProvider', '$locationProvider'];
+routing.$inject = ['$urlRouterProvider', '$locationProvider', '$httpProvider'];
 
-export default function routing($urlRouterProvider, $locationProvider) {
+export default function routing($urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/login');
     $locationProvider.html5Mode(true);
 }
