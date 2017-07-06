@@ -9,7 +9,7 @@ module.exports = function (app, knex, passport) {
     });
 
     // rota cursos, aqui entregamos o conteúdo do arquivo cursos.json
-    app.get('/cursos', function(req, res, next) {
+    app.get('/cursosJSON', function(req, res, next) {
 	    if( !req.isAuthenticated() ){                       // se "não" estiver logado
             return res.json({ logado: false });             // envia um json informando
         }

@@ -4,7 +4,7 @@ export default class UlbraService {
   	}
 
 	getCursos() {
-    	return this.$http.get('/cursos', { cache: true })
+    	return this.$http.get('/cursosJSON', { cache: true })
   	}
 
 	getLogado() {
