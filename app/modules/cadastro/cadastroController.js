@@ -9,7 +9,27 @@ export default class CadastroController {
         this.$state = $state;
     }
 
+    idade(){
+        let nasc = this.nascimento;
+        if( typeof nasc !== 'undefined' ){
+            nasc = nasc.split('/').reverse().join('-');
+            let nascDate = +new Date( nasc );
+            let idade = ~~((Date.now() - nascDate) / (31557600000));
+            this.nascValido = ( idade >= 18 );
+        }else{
+            this.nascValido = false;
+        }
+    }
+
+    confirma(){
+        let p = this.password;
+        let c = this.confirmacao;
+        this.confValido = ( p === c );
+    }
+
     cadastrar(){
+        console.log(this);
+        /*this.formulario.nascimento.$setValidity('vazio', false);
         if( this.enviando === true ){ return false; }
         this.enviando = true;
 
@@ -31,7 +51,7 @@ export default class CadastroController {
                 alert(erro);
                 vm.enviando = false;
             }
-        });
+        });*/
     }
 
 }
