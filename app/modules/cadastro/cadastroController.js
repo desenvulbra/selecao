@@ -1,7 +1,6 @@
 import md5 from 'md5';
 import $ from 'jquery';
 
-
 export default class CadastroController {
     constructor($http, $state) {
         this.enviando = false;

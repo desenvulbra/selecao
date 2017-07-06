@@ -26,7 +26,7 @@
 
             <!-- Nascimento -->
             <div class="form-group col-lg-6 col-md-6 col-sm-6" ng-class="{'has-error has-feedback': formulario.nascimento.$dirty && !cadastro.nascValido, 'has-success has-feedback': formulario.nascimento.$dirty && cadastro.nascValido  }">
-                <input class="form-control" ng-disabled="enviando" required name="nascimento" ng-model="cadastro.nascimento" placeholder="Data nascimento" type="text" clean="false" mask="39/19/9999" ng-change="cadastro.idade()" />
+                <input class="form-control" ng-disabled="enviando" required name="nascimento" ng-model="cadastro.nascimento" placeholder="Data nascimento" type="text" clean="false" mask="39/19/9999" ng-change="cadastro.idade()" onfocus="this.removeAttribute('readonly');" readonly />
                 <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.nascimento.$dirty && !cadastro.nascValido, 'glyphicon-ok': formulario.nascimento.$dirty && cadastro.nascValido  }"></span>
                 <span class="help-block" ng-show="(formulario.nascimento.$dirty && !cadastro.nascValido && !formulario.nascimento.$viewValue.length)">Este campo é obrigatório.</span>
                 <span class="help-block" ng-show="(formulario.nascimento.$dirty && !cadastro.nascValido && formulario.nascimento.$viewValue.length === 10)">Apenas maiores de idade podem se cadastrar.</span>
