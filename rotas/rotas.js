@@ -105,10 +105,8 @@ module.exports = function (app, knex, passport) {
         if(req.isAuthenticated()) {                     // se estiver logado
             res.clearCookie('login');                   // limpa o cookie
             req.logout();                               // efetua o logout
-            res.redirect('/');                          // redireciona para a raiz
-        } else {                                        // se não estiver logado
-            res.redirect('/');                          // apenas redireciona
         }
+        return res.sendStatus(200);                     // envia código 200 OK
     });
 
     // rota para as páginas não encontradas (qualquer rota que não esteja acima)
