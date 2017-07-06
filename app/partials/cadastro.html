@@ -1,6 +1,6 @@
 <div ng-controller="CadastroController" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 cx-login">
     <div class="center">
-        <img src="/images/logo.png" />
+        <img src="images/logo.png" />
     </div>
     <!-- Formulário -->
     <form name="formulario" ng-submit="cadastrar()">
@@ -17,7 +17,7 @@
             <!-- Sexo -->
             <div class="form-group col-lg-6 col-md-6 col-sm-6" ng-class="{'has-error has-feedback': formulario.sexo.$dirty && formulario.sexo.$invalid, 'has-success has-feedback': formulario.sexo.$dirty && formulario.sexo.$valid  }">
                 <select class="form-control" ng-disabled="enviando" required name="sexo" ng-model="login.sexo" >
-                    <option selected="" disabled="">Sexo</option>
+                    <option value="" selected="selected" disabled="disabled">Sexo</option>
                     <option value="F">Feminino</option>
                     <option value="M">Masculino</option>
                 </select>
