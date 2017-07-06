@@ -64,4 +64,10 @@ body {
 .cx-login form{
     margin-top: 30px;
 }
+
+/** Dicas dos campos **/
+.help-block{
+    background-color: rgba(255,255,255,.7);
+    padding: 6px;
+}
     
