@@ -1,14 +1,18 @@
-export default class UlbraService {
+export default class UlbraService {								// serviço
 	constructor($http) {
-    	this.$http = $http
+    	this.$http = $http;										// objeto $http
   	}
 
-	getCursos() {
-    	return this.$http.get('/cursosJSON', { cache: true })
+	getCursos() {												// Endpoint cursos
+    	return this.$http.get('/cursosJSON', { cache: true })	// retorna cursos
   	}
 
-	getLogado() {
-    	return this.$http.get('/logado', { cache: false })
+	getLogado() {												// Endpoint Logado?
+    	return this.$http.get('/logado', { cache: false })		// retorna logado?
   	}
+
+	getSair() {													// Endpoint sair
+		return this.$http.get('/sair', { cache: false })		// retorna sucesso
+	}
 
 }
