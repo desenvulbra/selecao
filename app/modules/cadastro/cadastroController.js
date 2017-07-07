@@ -27,30 +27,34 @@ export default class CadastroController {
     }
 
     cadastrar(){
-        console.log(this);
-        /*this.formulario.nascimento.$setValidity('vazio', false);
         if( this.enviando === true ){ return false; }
         this.enviando = true;
 
         let vm = this;
-        let xsrf = $.param({ username: this.username, password: md5(this.password) })
+        let xsrf = $.param({
+            nome        : this.nome,
+            sexo        : this.sexo,
+            nascimento  : this.nascimento,
+            email       : this.email,
+            password    : md5(this.password)
+        });
 
         this.$http({
-            method: 'POST',
+            method: 'PUT',
             url: '/cadastrar',
             data: xsrf,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then(function(resp){
             let resposta = resp.data;
             if( typeof resposta.sucesso !== 'undefined' ){
-                vm.$state.go('login', { username: vm.username, password: vm.password });
+                vm.$state.go('login', { username: vm.nome, password: vm.password });
             }else{
                 let erro = '';
                 if( typeof resposta.erro !== 'undefined' ){ erro = resposta.erro; }else{ erro = 'Ocorreu um erro crítico. Tente mais tarde.'; }
                 alert(erro);
                 vm.enviando = false;
             }
-        });*/
+        });
     }
 
 }
