@@ -1,5 +1,3 @@
-import UlbraService from './services/ulbraService';         // serviço
-
 start.$inject = ['$transitions', 'UlbraService'];           // injeção
 
 export default function start($transitions, UlbraService) { // verificação cold reload

@@ -2,12 +2,9 @@ import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
 import routing from './cursosRota';
-
-import cursosLista from './cursosComponent'
-import UlbraService from '../../services/ulbraService';
+import CursosController from './cursosController';
 
 export default angular.module('app.cursos', [uirouter])
 .config(routing)
-.component('cursosLista', cursosLista)
-.service('UlbraService', UlbraService)
+.controller('CursosController', CursosController)
 .name;
