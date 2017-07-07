@@ -2,10 +2,11 @@ import md5 from 'md5';
 import $ from 'jquery';
 
 export default class CadastroController {
-    constructor($http, $state) {
+    constructor($http, $state, toaster) {
         this.enviando = false;
         this.$http = $http;
         this.$state = $state;
+        this.toaster = toaster;
     }
 
     idade(){
@@ -51,7 +52,12 @@ export default class CadastroController {
             }else{
                 let erro = '';
                 if( typeof resposta.erro !== 'undefined' ){ erro = resposta.erro; }else{ erro = 'Ocorreu um erro crítico. Tente mais tarde.'; }
-                alert(erro);
+                vm.toaster.pop({
+                    type    : 'error',
+                    title   : 'Erro',
+                    body    : erro,
+                    timeout : 3000
+                });
                 vm.enviando = false;
             }
         });

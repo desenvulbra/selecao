@@ -9,6 +9,7 @@ import cursos from './modules/cursos';                      // módulo cursos
 import sair from './modules/sair';                          // módulo sair (apenas rota)
 
 import 'bootstrap/dist/css/bootstrap.css';
+import 'angularjs-toaster/toaster.css';
 import './styles/style.css';
 
 const modulos = [uirouter, login, cadastro, cursos, sair];  // módulos da nossa aplicação
