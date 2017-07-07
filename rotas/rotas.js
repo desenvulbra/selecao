@@ -47,46 +47,94 @@ module.exports = function (app, knex, passport) {
 
     // rota para realizar o cadastro de um usuário
     app.put('/cadastrar', function(req, res, next) {
-        ['email', 'password', 'sexo', 'nome', 'nascimento'].forEach(function(part, index){
-            if( !(part in req.body) ){
-                return res.json({ erro: 'Erro! Verifique os dados preenchidos e tente novamente.' });
+        const campos = [
+            {
+                campo: 'nome',
+                regex: /^[a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*( [a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*)+$/i,
+                menor: 3,
+                maior: 80,
+                alias: 'Nome',
+                valor: ''
+            },
+            {
+                campo: 'sexo',
+                regex: /^M$|^F$/,
+                menor: 1,
+                maior: 1,
+                alias: 'Sexo',
+                valor: ''
+            },
+            {
+                campo: 'nascimento',
+                regex: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/,
+                menor: 10,
+                maior: 10,
+                alias: 'Data de Nascimento',
+                valor: ''
+            },
+            {
+                campo: 'email',
+                regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                menor: 6,
+                maior: 255,
+                alias: 'E-mail',
+                valor: ''
+            },
+            {
+                campo: 'password',
+                regex: /^[a-f0-9]{32}$/, // validamos a hash que já vai vir pronta
+                menor: 32,
+                maior: 32,
+                alias: 'Senha',
+                valor: ''
+            }
+
+        ];
+
+        campos.forEach(function(part, index){                           // para cada campo
+            if( !(part.campo in req.body) ){                            // verifica se foi RECEBIDO
+                let msg = 'Erro! Verifique os dados preenchidos';       // mensagem de erro
+                return res.json({ erro: msg });                         // finaliza com a mensagem
+            }else{                                                      // se foi recebido
+                part.valor = req.body[part.campo];                      // pega o valor
+                if( !part.regex.test(part.valor) ){                     // nome fora do esperado
+                    let msg = `Confira o campo ${part.alias}.`;         // mensagem de erro
+                    return res.json({ erro: msg });                     // finaliza com a mensagem
+                }
+                if( part.valor.length < part.menor ){                   // valor menor que o esperado
+                    let msg = `Confira o campo ${part.alias}.`;         // mensagem de erro
+                    return res.json({ erro: msg });                     // finaliza com a mensagem
+                }
+                if( part.valor.length > part.maior ){                   // valor maior que o esperado
+                    let msg = `Confira o campo ${part.alias}.`;         // mensagem de erro
+                    return res.json({ erro: msg });                     // finaliza com a mensagem
+                }
+                if( part.campo === 'nascimento' ){                      // verificação especial
+                    let n = part.valor.split('/').reverse().join('-');  // normaliza a data
+                    part.valor = n;                                     // guarda a data no padrão
+                    n = +new Date( n );                                 // objeto data
+                    let idade = ~~((Date.now() - n) / (31557600000));   // idade
+                    if( idade < 18 ){                                   // menor de 18 anos
+                        let msg = `Confira o campo ${part.alias}.`;     // mensagem de erro
+                        return res.json({ erro: msg });                 // finaliza com a mensagem
+                    }
+                }
             }
         });
-        let email = req.body.email;
-        let senha = req.body.password;
-        let sexo = req.body.sexo;
-        let nome = req.body.nome;
-        let nasc = req.body.nascimento;
 
-        if( senha.length < 8 ){
-            return res.json({ erro: 'Erro! A senha deve possuir no mínimo 8 caracteres.' });
-        }
+        // se chegou até aqui, está tudo OK com os campos.
+        let sql = "BEGIN :ret := GERAID(:emai,:nome,:sexo,:nasc,:senh); END;";
+        knex.raw(sql, {
+            ret: "SBBHQK____Calling__planet__Earth", 
+            nome: campos[0].valor,
+            sexo: campos[1].valor,
+            nasc: campos[2].valor,
+            emai: campos[3].valor,
+            senh: campos[4].valor
+        }).then( function(){
+            return res.json({ sucesso: true });
+        });
 
-        if( sexo !== 'M' && sexo !== 'F' ){
-            return res.json({ erro: 'Erro! Verifique o sexo selecionado.' });
-        }
-
-        if( nome.toString().trim().length === 0 ){
-            return res.json({ erro: 'Erro! Nome não pode ficar em branco.' });
-        }
-
-        nasc = nasc.split('/').reverse().join('-');
-        let nascimento = +new Date( nasc );
-        let idade = ~~((Date.now() - nascimento) / (31557600000));
-        if( idade < 18 ){
-            return res.json({ erro: 'Erro! A idade mínima para cadastro é de 18 anos.' });
-        }
-
-        senha = md5(senha);
-
-        console.log(req.body);
-        knex('USUARIO')
-        .insert({ EMAIL: email, NOME: nome, SEXO: sexo, NASCIMENTO: nasc, SENHA: senha })
-        .then(
-            function(){
-                console.log('salvou!');
-            }
-        );
         /*if(typeof req.body.email !== 'undefined'){
             
             //procura no banco por alguem com esse email
@@ -96,7 +144,7 @@ module.exports = function (app, knex, passport) {
         }else{
             return res.json({ erro: 'Erro! Tente novamente mais tarde.' });
         }*/
-        return res.sendStatus(200);
+        
         
     });
 
