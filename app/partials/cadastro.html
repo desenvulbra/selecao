@@ -7,7 +7,7 @@
 
         <!-- Nome -->
         <div class="form-group" ng-class="{'has-error has-feedback': formulario.nome.$dirty && formulario.nome.$invalid, 'has-success has-feedback': formulario.nome.$dirty && formulario.nome.$valid  }">
-            <input class="form-control" ng-disabled="enviando" required name="nome" ng-model="cadastro.nome" placeholder="Nome Completo" ng-pattern="/^[a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*( [a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*)+$/i" />
+            <input class="form-control" ng-disabled="enviando" required name="nome" ng-model="cadastro.nome" placeholder="Nome Completo" ng-pattern="/^[a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*( [a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*)+$/i" onfocus="this.removeAttribute('readonly');" readonly />
             <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.nome.$dirty && formulario.nome.$invalid, 'glyphicon-ok': formulario.nome.$dirty && formulario.nome.$valid  }"></span>
             <span class="help-block" ng-show="(formulario.nome.$dirty && formulario.nome.$invalid && !formulario.nome.$viewValue.length)">Este campo é obrigatório.</span>
             <span class="help-block" ng-show="(formulario.nome.$dirty && formulario.nome.$invalid && formulario.nome.$viewValue.length > 0)">Digite o seu nome completo.</span>
