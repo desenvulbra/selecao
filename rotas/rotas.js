@@ -38,7 +38,6 @@ module.exports = function (app, knex, passport) {
                 if(err) {
                     return res.json({erro: 'Dados de login não conferem!' });
                 } else {
-                    req.session.passport.nome = user.NOME;
                     res.json({ sucesso: 'sim' });
                 }
             });
@@ -156,6 +155,20 @@ module.exports = function (app, knex, passport) {
         }
         return res.sendStatus(200);                     // envia código 200 OK
     });
+
+    // rota para o login do google
+    app.get('/auth/google', passport.authenticate('google', {
+        scope: [
+            'https://www.googleapis.com/auth/plus.login',
+  	        'https://www.googleapis.com/auth/plus.profile.emails.read'
+        ]
+    }));
+
+    // rota para o login do google
+    app.get( '/auth/google/callback', passport.authenticate('google', {
+		successRedirect: '/cursos',
+		failureRedirect: '/login'
+    }));
 
     // rota para as páginas não encontradas (qualquer rota que não esteja acima)
     app.use(function(req, res, next) {

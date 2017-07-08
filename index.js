@@ -12,6 +12,7 @@ const md5			= require('md5');						// md5 hash
 const session		= require('express-session');			// sessão
 const passport		= require('passport');					// login
 const LocalStrategy = require('passport-local').Strategy; 	// login local
+const GoogleStrategy= require('passport-google-oauth2').Strategy;// login google
 const ejs			= require('ejs');						// renderizador
 const app			= express();							// aplicativo
 const server		= http.Server(app);						// instância do servidor
@@ -59,8 +60,8 @@ const porta = process.env.OPENSHIFT_NODEJS_PORT || 8080;	// porta para servir a 
 
 
 /**
- * Autenticação
- * Abaixo está as configuração da estratégia de Login
+ * Autenticação Oracle
+ * Abaixo está as configuração da estratégia de Login Local
  */
 passport.use(new LocalStrategy(function(email, senha, done) {
     new Usuario({EMAIL: email}).fetch().then(function(data) {
@@ -78,11 +79,37 @@ passport.use(new LocalStrategy(function(email, senha, done) {
 	});
 }));
 
+/**
+ * Autenticação OAuth2
+ * Abaixo está as configurações da estratégia de Login via Google
+ */
+passport.use(new GoogleStrategy({
+	clientID:     '320156464066-14g60hsrdnhqm67mg3k0gcolq1lntepu.apps.googleusercontent.com',
+    clientSecret: 'UoZccSNpVrpzkwAK1V259eoU',
+    callbackURL: "http://localhost:8080/auth/google/callback",
+    passReqToCallback   : true
+}, function(request, accessToken, refreshToken, profile, done) {
+	return done(null, profile);
+}));
+
+
+/**
+ * Funções auxiliares
+ * São utilizadas para buscar e retornar o usuário
+ */
 passport.serializeUser(function(usuario, done) {
-    done(null, usuario.EMAIL);
+	if( 'email' in usuario ){
+		return done(null, 'usuarioGoogle');
+	}
+	if( 'EMAIL' in usuario ){
+		done(null, usuario.EMAIL);
+	}
 });
 
 passport.deserializeUser(function(usuario, done) {
+	if( usuario === 'usuarioGoogle' ){
+		return done(null, usuario);
+	}
     new Usuario({EMAIL: usuario}).fetch().then(function(usuario) {
 	    done(null, usuario);
 	});
