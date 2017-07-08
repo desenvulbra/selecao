@@ -1,7 +1,7 @@
 const fs			= require('fs');						//file system
 const path			= require('path');						//path
 
-module.exports = function (app, knex, passport) {
+module.exports = function (app, knex, passport, Usuario) {
 
     // rota principal (raiz)
     app.get('/', function(req, res, next) {
@@ -122,29 +122,26 @@ module.exports = function (app, knex, passport) {
         });
 
         // se chegou até aqui, está tudo OK com os campos.
-        let sql = "BEGIN :ret := GERAID(:emai,:nome,:sexo,:nasc,:senh); END;";
-        knex.raw(sql, {
-            ret: "SBBHQK____Calling__planet__Earth", 
-            nome: campos[0].valor,
-            sexo: campos[1].valor,
-            nasc: campos[2].valor,
-            emai: campos[3].valor,
-            senh: campos[4].valor
-        }).then( function(){
-            return res.json({ sucesso: true });
+        new Usuario({EMAIL: campos[3].valor}).fetch()               // verifica se já existe...
+        .then(function(usuario) {                                   // ... este email cadastrado
+            if(usuario){                                            // existe
+                let msg = 'Este email já foi usado.';               // mensagem de erro
+                return res.json({ erro: msg });                     // finaliza com a mensagem
+            }else{                                                  // não existe
+                let sql = "BEGIN :ret := GERAID(:emai,:nome,:sexo,:nasc,:senh); END;";
+                knex.raw(sql, {
+                    ret: "SBBHQK____Calling__planet__Earth", 
+                    nome: campos[0].valor,
+                    sexo: campos[1].valor,
+                    nasc: campos[2].valor,
+                    emai: campos[3].valor,
+                    senh: campos[4].valor
+                }).then( function(){
+                    return res.json({ sucesso: true });
+                });
+            }
         });
 
-        /*if(typeof req.body.email !== 'undefined'){
-            
-            //procura no banco por alguem com esse email
-            //insere o email no banco, usando a senha
-            return res.json({ sucesso: 'sim' });
-            
-        }else{
-            return res.json({ erro: 'Erro! Tente novamente mais tarde.' });
-        }*/
-        
-        
     });
 
     // rota para fazer o logout

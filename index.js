@@ -149,7 +149,7 @@ app.engine('html', ejs.renderFile);								// passa os html pela engine EJS
  * Rotas
  * Aqui é feita a importação da rotas que ficam em um arquivo separado.
  */
-require("./rotas/rotas.js")(app, knex, passport);				// importa as rotas
+require("./rotas/rotas.js")(app, knex, passport, Usuario);				// importa as rotas
 
 
 /**
