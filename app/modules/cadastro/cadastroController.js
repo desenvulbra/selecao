@@ -48,7 +48,14 @@ export default class CadastroController {
         }).then(function(resp){
             let resposta = resp.data;
             if( typeof resposta.sucesso !== 'undefined' ){
-                vm.$state.go('login', { username: vm.nome, password: vm.password });
+                vm.toaster.pop({
+                    type    : 'success',
+                    title   : 'Sucesso',
+                    body    : 'Conta criada! Você já pode se logar.',
+                    timeout : 2000,
+                    onHideCallback: () => { vm.$state.go('login') }
+                });
+                
             }else{
                 let erro = '';
                 if( typeof resposta.erro !== 'undefined' ){ erro = resposta.erro; }else{ erro = 'Ocorreu um erro crítico. Tente mais tarde.'; }
