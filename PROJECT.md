@@ -106,7 +106,7 @@ $ webpack
 $ npm start
 ```
 
-Agora você poderá acessar o projeto a partir do seguinte endereço URL:
+Se tudo deu certo, você poderá acessar o projeto a partir do seguinte endereço URL:
 
 ~~~
 http://localhost:8080
