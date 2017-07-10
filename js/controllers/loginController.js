@@ -6,12 +6,13 @@ angular.module('Authentication').controller('loginController',
         authenticationService.ClearCredentials();
  
         $scope.login = function () {
-			console.log('chegou na função');
             $scope.dataLoading = true;
             authenticationService.Login($scope.email, $scope.senha, function(response) {
                 if(response.success) {
                     authenticationService.SetCredentials($scope.email, $scope.senha);
-                    $location.path('/');
+					document.location.href = '/curso';
+					/* console.log($location); */
+                    /* $location.path('/curso');*/
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;

@@ -3,13 +3,12 @@
 
 // declarar modules
 
-angular.module('ulbra', []);
+angular.module('ulbra', [])
 angular.module('Authentication', []);
 angular.module('Home', []);
 
 angular.module('ulbraLogin', [
     'Authentication',
-    'Home',
     'ngRoute',
     'ngCookies'
 ])
@@ -22,8 +21,8 @@ angular.module('ulbraLogin', [
             hideMenus: true
         })
  
-        .when('/', {
-            redirectTo: '/cursos'
+        .when('/curso', {
+            controller: 'loginController',
         })
  
         .otherwise({ redirectTo: '/index' });

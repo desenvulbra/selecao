@@ -5,25 +5,28 @@ angular.module('Authentication').factory('authenticationService',
     function (Base64, $http, $cookieStore, $rootScope, $timeout) {
         var service = {};
 
-        service.Login = function (email, password, callback) {
-
-            /* Dummy authentication for testing, uses $timeout to simulate api call
+        service.Login = function (email, senha, callback) {
+			/* console.log('chegou no service'); */ 
+			/* console.log('chegou no service email : ' + email); */
+			/* console.log('chegou no service: ' + senha); */
+			
+            /* Controle para teste, usei $timeout para simular chamada da API
              ----------------------------------------------*/
-            $timeout(function(){
-                var response = { success: email === 'test' && password === 'test' };
-                if(!response.success) {
-                    response.message = 'E-mail ou Senha inválido(s).';
-                }
-                callback(response);
-            }, 1000);
+            //$timeout(function(){
+            //    var response = { success: email === 'test' && senha === 'test' };
+            //    if(!response.success) {
+            //        response.message = 'E-mail ou Senha inválido(s).';
+            //    }
+            //    callback(response);
+            //}, 1000);
 
 
-            /* Use this for real authentication
+            /* Uso para produção
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { email: email, senha: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+            $http.post('/api/authenticate', { email: email, senha: senha })
+                .success(function (response) {
+                    callback(response);
+                });
 
         };
  
