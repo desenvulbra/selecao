@@ -146,7 +146,7 @@ O que vamos avaliar:
 
 ## Entrega
 
-O processo de entraga da atividade deve ser:
+O processo de entrega da atividade deve ser:
 
 1)	Crie um PROJECT.md com a explicação de como devemos executar o projeto, 
 com o máximo de detalhes possível do que foi feito e a documentação da API REST
