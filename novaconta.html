@@ -1,0 +1,75 @@
+<html ng-app="ulbra">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="js/bootstrap.js">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+        <script src="./js/angular.js"></script>
+
+        <script>
+          angular.module("ulbra", []);
+          angular.module("ulbra").controller("novaContaController", function($scope, $http){
+          $scope.cadastro =[];
+
+
+          });
+        </script>
+
+    </head>
+    <body ng-controller="novaContaController">
+        <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 cx-login">
+                <div class="center">
+                    <img src="img/logo.png">
+                </div>
+
+                <form name="cadastro">
+                  <div class="col-lg-12 m-t-20">
+                          <div class="col-lg-12 m-t-10">
+                              <input class="form-control" placeholder="Nome Completo" ng-model="nome">
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-sm-4">
+                              <select class="form-control m-t-10" ng-model="sexo">
+                                  <option value="" selected="" disabled="">Sexo</option>
+                                  <option value="F">Feminino</option>
+                                  <option value="M">Masculino</option>
+                              </select>
+                          </div>
+                          <div class="col-lg-8 col-md-8 col-sm-8">
+                              <input class="form-control m-t-10" placeholder="Data de nascimento" ng-model="nascimento" pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)">
+                          </div>
+                          <div class="clearfix"></div>
+                          <div class="col-lg-12 m-t-10">
+                              <input type="email" class="form-control" placeholder="E-mail"  ng-model="email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required>
+                          </div>
+                          <div class="col-lg-12">
+                              <input type="password" class="form-control m-t-10" placeholder="Senha"  ng-model="senha">
+                          </div>
+                          <div class="col-lg-12">
+                              <input type="password" class="form-control m-t-10" placeholder="Repita a senha"  ng-model="senhaConfirmacao">
+                          </div>
+                  </div>
+--------- <h1>{{cadastro.email.$valid}}</h1>-------
+
+              </form>
+
+
+
+                <div class="col-lg-12 m-t-20">
+                    <div class="col-lg-12">
+                   <a href="index.html"> <button type="button" class="col-lg-5 btn btn-login">Voltar</button></a>
+                   <a href="curso.html"> <button type="button"  class="f-r col-lg-5 btn btn-login">Concluir</button></a>
+                    </div>
+                </div>
+                <br/><br/>
+        </div>
+    </body>
+
+
+
+
+
+
+</html>

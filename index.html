@@ -1,0 +1,68 @@
+<html ng-app="ulbraLogin">
+    <head>
+		<!-- Meta para uso de API do Google. Trocar informações de Credencias em content -->
+		<meta name="google-signin-client_id" content="122527468783-vne35jekk3prkqll779pets1mvqgr1nd.apps.googleusercontent.com">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="js/bootstrap.js">
+		
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		
+		<script src="js/angular.js"></script>
+		<script src="js/angular-route.js"></script>
+		<script src="js/angular-cookies.js"></script>
+		
+		<script src="js/app.js"></script>
+		<script src="js/services/authenticationService.js"></script>
+		<script src="js/controllers/loginController.js"></script>
+		
+		<script src="js/btn_google.js"></script>
+		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+		
+	
+		
+    </head>
+
+    <body>
+	
+	
+        <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 cx-login">
+
+                <div class="center">
+                    <img src="img/logo.png">
+                </div>
+				
+				<div ng-show="error" class="alert alert-danger">{{error}}</div>
+				<form name="form" role="form">			
+                <div class="col-lg-12  m-t-20">                   
+                    <input type="text" name="email" id="email" class="form-control" placeholder="E-mail" ng-model="email" required />
+					<span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Por favor, digite o e-mail cadastrado.</span>
+                </div>
+				
+				<div class="col-lg-12  m-t-20">
+                    <input type="password" name="password" id="password" class="form-control m-t-10" placeholder="Senha" ng-model="password" required />
+					<span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Por favor, digite sua senha de acesso.</span>
+				</div>
+				
+				
+                <div class="col-lg-12 m-t-20">
+					<!-- login google --->
+					<div class="g-signin2 col-lg-5 col-md-5 col-sm-5 col-xs-5 " data-onsuccess="onSuccess"></div>
+                   	<button type="button" class="f-r col-lg-5 col-md-5 col-sm-5 col-xs-5 btn btn-login" class="btn btn-danger" ng-click="login()">Login</button>
+					<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>					
+                </div>
+				</form>
+                <br/><br/>
+                <div class="col-lg-6 esq m-t-20 f-r center"><a href="novaconta.html">Criar conta</a></div>
+
+        </div>
+    </body>
+
+
+
+
+
+
+</html>
