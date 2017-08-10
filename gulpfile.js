@@ -10,7 +10,7 @@ gulp.task('vendor-js', function() {
     './node_modules/angular-animate/angular-animate.js',
     './node_modules/angular-messages/angular-messages.js',
     './node_modules/angular-sanitize/angular-sanitize.js',
-    './node_modules/angular-toastr/dist/angular-toastr.js',
+    './node_modules/angular-toastr/dist/angular-toastr.tpls.js',
     './node_modules/angular-input-masks/releases/angular-input-masks-standalone.js'
   ]).pipe(concat('vendor.js'))
     .pipe(uglify())

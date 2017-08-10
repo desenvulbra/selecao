@@ -5,14 +5,13 @@ var router = express.Router();
 router.post('/login', function (req, res, next) {
 	var email = req.body.email;
 	var senha = req.body.senha;
-	var errors = {};
 
 	if (!email) {
-		errors.email = 'É necessário preencher o e-mail.';
+		renderError(res, 'É necessário preencher o e-mail.');
 	}
 
 	if (!senha) {
-		errors.senha = 'É necessário preencher a senha.';
+		renderError(res, 'É necessário preencher a senha.');
 	}
 
 	var usuarios = {
@@ -21,21 +20,17 @@ router.post('/login', function (req, res, next) {
 		'joao@gmail.com': '3858f62230ac3c915f300c664312c63f'
 	};
 
-	if (email && senha && (Object.keys(usuarios).indexOf(usuarios) != -1 || usuarios[email] != senha)) {
-		usuarios.email = 'E-mail ou senha não estão incorretos.';
+	if (email && senha && (Object.keys(usuarios).indexOf(email) == -1 || usuarios[email] != senha)) {
+		renderError(res, 'E-mail ou senha estão incorretos.');
 	}
 
-	if (errors.length > 0) {
-		res.status(500).json(errors);
-	} else {
-		var token = jwt.sign({
-			sub: 'dasdiasd99asd7'
-		}, req.app.get('superSecret'));
+	var token = jwt.sign({
+		sub: 'dasdiasd99asd7'
+	}, req.app.get('superSecret'));
 
-		res.json({
-			token: token
-		});
-	}
+	res.json({
+		token: token
+	});
 });
 
 router.post('/register', function (req, res) {
@@ -116,6 +111,10 @@ function isEmailValid(email) {
 	}
 	var re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	return re.test(email);
+}
+
+function renderError(res, message) {
+	res.status(500).json({message: message});
 }
 
 module.exports = router;
