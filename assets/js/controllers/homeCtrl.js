@@ -1,4 +1,4 @@
-app.controller('HomeCtrl', ['Auth', 'toastr', '$state', function(Auth, toastr, $state) {
+app.controller('HomeCtrl', ['Auth', 'TokenManager', 'toastr', '$state', function(Auth, TokenManager, toastr, $state) {
   var $ctrl = this;
   $ctrl.submitting = false;
 
@@ -6,7 +6,7 @@ app.controller('HomeCtrl', ['Auth', 'toastr', '$state', function(Auth, toastr, $
     $ctrl.submitting = true;
     Auth.authenticate($ctrl.email, $ctrl.senha)
       .then(function(response) {
-        Auth.saveToken(response.data.token);
+        TokenManager.saveToken(response.data.token);
         toastr.success('Usuário autenticado com sucesso.');
         $state.go('cursos');
       })

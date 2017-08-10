@@ -1,4 +1,4 @@
-app.factory('Auth', ['$http', '$window', function ($http, $window) {
+app.factory('Auth', ['$http', function($http) {
   return {
     authenticate: function(email, senha) {
       return $http.post('/auth/login', {
@@ -6,11 +6,5 @@ app.factory('Auth', ['$http', '$window', function ($http, $window) {
         senha: senha
       });
     },
-    saveToken: function(token) {
-      $window.localStorage['jwtToken'] = token;
-    },
-    getToken: function() {
-      return $window.localStorage['jwtToken'];
-    }
   };
 }]);
