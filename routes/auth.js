@@ -21,7 +21,7 @@ router.post('/login', function (req, res, next) {
 		'joao@gmail.com': '3858f62230ac3c915f300c664312c63f'
 	};
 
-	if (email && senha && (usuarios.indexOf(usuarios) != -1 || usuarios[email] != senha)) {
+	if (email && senha && (Object.keys(usuarios).indexOf(usuarios) != -1 || usuarios[email] != senha)) {
 		usuarios.email = 'E-mail ou senha não estão incorretos.';
 	}
 
