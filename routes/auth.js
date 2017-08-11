@@ -1,6 +1,9 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
+var oracledb = require('oracledb');
+var config = require('../config');
 var router = express.Router();
+oracledb.autoCommit = true;
 
 router.post('/login', function (req, res, next) {
 	var email = req.body.email;
@@ -14,23 +17,47 @@ router.post('/login', function (req, res, next) {
 		renderError(res, 'É necessário preencher a senha.');
 	}
 
-	var usuarios = {
-		'fulano@gmail.com': '3858f62230ac3c915f300c664312c63f',
-		'carla@gmail.com': '3858f62230ac3c915f300c664312c63f',
-		'joao@gmail.com': '3858f62230ac3c915f300c664312c63f'
-	};
+	oracledb.getConnection({
+		user          : config.user,
+		password      : config.password,
+		connectString : config.connectString
+	}, function(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
 
-	if (email && senha && (Object.keys(usuarios).indexOf(email) == -1 || usuarios[email] != senha)) {
-		renderError(res, 'E-mail ou senha estão incorretos.');
-	}
+    connection.execute(
+    	"SELECT ID, SENHA " + 
+    	"FROM USUARIO WHERE EMAIL = :email",
+    	[email],
+    	function(err, result) {
+        if (err) {
+          doRelease(connection);
+          res.end()
+        }
 
-	var token = jwt.sign({
-		sub: 'dasdiasd99asd7'
-	}, req.app.get('superSecret'));
+        if (result && result.rows.length > 0) {
+        	var usuario = result.rows[0];
 
-	res.json({
-		token: token
-	});
+					if (usuario[1] != senha) {
+	        	doRelease(connection);
+						renderError(res, 'E-mail ou senha estão incorretos.');							
+					}
+
+					var token = jwt.sign({
+						sub: usuario[0]
+					}, config.secret);
+
+					res.json({
+						token: token
+					});
+        } else {
+        	doRelease(connection);
+					renderError(res, 'E-mail ou senha estão incorretos.');	
+        }
+    	});
+  });
 });
 
 router.post('/register', function (req, res) {
@@ -70,26 +97,47 @@ router.post('/register', function (req, res) {
 		errors.senha = 'É necessário preencher a senha.';
 	}
 
-	var emails = [
-		'fulano@gmail.com',
-		'carla@gmail.com',
-		'joao@gmail.com',
-	];
-
-	if (email && emails.indexOf(email) >= 0) {
-		errors.email = 'Este e-mail já está cadastrado.';
-	}	
-
 	if (Object.keys(errors).length > 0) {
 		res.status(500).json(errors);
 	} else {
-		var token = jwt.sign({
-			sub: 'dasdiasd99asd7'
-		}, req.app.get('superSecret'));
+		oracledb.getConnection({
+			user          : config.user,
+			password      : config.password,
+			connectString : config.connectString
+		}, function(err, connection) {
+	    if (err) {
+	      console.error(err.message);
+	      return;
+	    }
 
-		res.json({
-			token: token
-		});
+	    connection.execute(
+	    	"INSERT INTO USUARIO (EMAIL, NOME, SEXO, NASCIMENTO, SENHA) " + 
+	    	"VALUES (:email, :nome, :sexo, TO_DATE(:nascimento, 'yyyy-mm-dd'), :senha)",
+	    	[email, nome, sexo, nascimento, senha],
+	    	function(err, result) {
+	        if (err) {
+		        doRelease(connection);
+	        	res.status(500).json({email: 'Este e-mail já está cadastrado.'});
+	        	return;
+	        }
+
+			    connection.execute(
+			    	"SELECT ID " + 
+			    	"FROM USUARIO WHERE EMAIL = :email",
+			    	[email],
+			    	function(err, result) {
+		          doRelease(connection);
+
+							var token = jwt.sign({
+								sub: result.rows[0][0]
+							}, config.secret);
+
+							res.json({
+								token: token
+							});
+			      });
+	    	});
+	  });
 	}
 });
 
@@ -115,6 +163,14 @@ function isEmailValid(email) {
 
 function renderError(res, message) {
 	res.status(500).json({message: message});
+}
+
+function doRelease(connection) {
+  connection.close(function(err) {
+    if (err) {
+      console.error(err.message);
+    }
+  });
 }
 
 module.exports = router;

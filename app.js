@@ -12,8 +12,6 @@ var config = require('./config');
 
 var app = express();
 
-app.set('superSecret', config.secret);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

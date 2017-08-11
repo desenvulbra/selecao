@@ -1,3 +1,6 @@
 module.exports = {
-	'secret': 'ilovescotchyscotch'
+	'secret': 'foobar',
+	'user': 'system',
+	'password': 'manager',
+	'connectString': 'localhost/XE'
 };
