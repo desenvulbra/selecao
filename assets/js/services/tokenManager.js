@@ -19,6 +19,9 @@ app.factory('TokenManager', ['$window', function ($window) {
     },
     getToken: function() {
       return $window.localStorage['jwtToken'];
+    },
+    deleteToken: function() {
+      $window.localStorage.removeItem('jwtToken');
     }
   };
 }]);

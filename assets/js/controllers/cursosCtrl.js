@@ -1,4 +1,4 @@
-app.controller('CursosCtrl', ['Curso', 'toastr', function(Curso, toastr) {
+app.controller('CursosCtrl', ['Curso', 'toastr', 'TokenManager', '$state', 'toastr', function(Curso, toastr, TokenManager, $state, toastr) {
   var $ctrl = this;
 
   $ctrl.cursos = [];
@@ -9,4 +9,10 @@ app.controller('CursosCtrl', ['Curso', 'toastr', function(Curso, toastr) {
     .catch(function() {
       toastr.error('Falha ao carregar os cursos.');
     });
+
+  $ctrl.logout = function() {
+  	TokenManager.deleteToken();
+  	toastr.success('Sessão encerrada com sucesso.')
+  	$state.go('home');
+  }
 }]);

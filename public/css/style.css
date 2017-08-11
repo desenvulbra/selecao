@@ -48,3 +48,8 @@
     border-radius: 4px;
     border: 1px solid #843030;
 }
+
+.logout-btn {
+    display: block;
+    margin: 0 auto;
+}
