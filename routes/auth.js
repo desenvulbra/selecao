@@ -7,224 +7,224 @@ var GoogleAuth = require('google-auth-library');
 oracledb.autoCommit = true;
 
 router.post('/login', function (req, res, next) {
-	var email = req.body.email;
-	var senha = req.body.senha;
+  var email = req.body.email;
+  var senha = req.body.senha;
 
-	if (!email) {
-		renderError(res, 'É necessário preencher o e-mail.');
-	}
+  if (!email) {
+    renderError(res, 'É necessário preencher o e-mail.');
+  }
 
-	if (!senha) {
-		renderError(res, 'É necessário preencher a senha.');
-	}
+  if (!senha) {
+    renderError(res, 'É necessário preencher a senha.');
+  }
 
-	oracledb.getConnection({
-		user          : config.user,
-		password      : config.password,
-		connectString : config.connectString
-	}, function(err, connection) {
+  oracledb.getConnection({
+    user          : config.user,
+    password      : config.password,
+    connectString : config.connectString
+  }, function(err, connection) {
     if (err) {
       console.error(err.message);
       return;
     }
 
     connection.execute(
-    	"SELECT ID, SENHA " + 
-    	"FROM USUARIO WHERE EMAIL = :email",
-    	[email],
-    	function(err, result) {
+      "SELECT ID, SENHA " + 
+      "FROM USUARIO WHERE EMAIL = :email",
+      [email],
+      function(err, result) {
         if (err) {
-        	doRelease(connection);
-					renderError(res, 'E-mail ou senha estão incorretos.');
-					return;
+          doRelease(connection);
+          renderError(res, 'E-mail ou senha estão incorretos.');
+          return;
         }
 
         if (result && result.rows.length > 0) {
-        	var usuario = result.rows[0];
+          var usuario = result.rows[0];
 
-					if (usuario[1] != senha) {
-	        	doRelease(connection);
-						renderError(res, 'E-mail ou senha estão incorretos.');
-						return;
-					}
+          if (usuario[1] != senha) {
+            doRelease(connection);
+            renderError(res, 'E-mail ou senha estão incorretos.');
+            return;
+          }
 
-					var token = jwt.sign({
-						sub: usuario[0],
-						exp: Math.floor(Date.now() / 1000) + (60 * 60)
-					}, config.secret);
+          var token = jwt.sign({
+            sub: usuario[0],
+            exp: Math.floor(Date.now() / 1000) + (60 * 60)
+          }, config.secret);
 
-					res.json({
-						token: token
-					});
+          res.json({
+            token: token
+          });
         } else {
-        	doRelease(connection);
-					renderError(res, 'E-mail ou senha estão incorretos.');	
+          doRelease(connection);
+          renderError(res, 'E-mail ou senha estão incorretos.');  
         }
-    	});
+      });
   });
 });
 
 router.post('/google-signin', function(req, res) {
-	var auth = new GoogleAuth;
-	var client = new auth.OAuth2(config.clientId, '', '');
-	client.verifyIdToken(req.body.token, config.clientId, function(e, login) {
-		if (e) {
-			renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.');	
-			return;
-		}
-		var payload = login.getPayload();
-		var userid = payload['sub'];
-		var email = 'googleSignIn#' + payload['email'];
-		var nome = payload['name'];
+  var auth = new GoogleAuth;
+  var client = new auth.OAuth2(config.clientId, '', '');
+  client.verifyIdToken(req.body.token, config.clientId, function(e, login) {
+    if (e) {
+      renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.'); 
+      return;
+    }
+    var payload = login.getPayload();
+    var userid = payload['sub'];
+    var email = 'googleSignIn#' + payload['email'];
+    var nome = payload['name'];
 
-		oracledb.getConnection({
-			user          : config.user,
-			password      : config.password,
-			connectString : config.connectString
-		}, function(err, connection) {
-	    if (err) {
-	      console.error(err.message);
-	      return;
-	    }
+    oracledb.getConnection({
+      user          : config.user,
+      password      : config.password,
+      connectString : config.connectString
+    }, function(err, connection) {
+      if (err) {
+        console.error(err.message);
+        return;
+      }
 
-	    connection.execute(
-	    	"SELECT ID " + 
-	    	"FROM USUARIO WHERE EMAIL = :email",
-	    	[email],
-	    	function(err, result) {
-	        if (err) {
-	        	doRelease(connection);
-						renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.');
-						return;
-	        }
+      connection.execute(
+        "SELECT ID " + 
+        "FROM USUARIO WHERE EMAIL = :email",
+        [email],
+        function(err, result) {
+          if (err) {
+            doRelease(connection);
+            renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.');
+            return;
+          }
 
-	        if (result && result.rows.length > 0) {
-	        	doRelease(connection);
-	        	var usuario = result.rows[0];
+          if (result && result.rows.length > 0) {
+            doRelease(connection);
+            var usuario = result.rows[0];
 
-						var token = jwt.sign({
-							sub: usuario[0],
-							exp: Math.floor(Date.now() / 1000) + (60 * 60)
-						}, config.secret);
+            var token = jwt.sign({
+              sub: usuario[0],
+              exp: Math.floor(Date.now() / 1000) + (60 * 60)
+            }, config.secret);
 
-						res.json({
-							token: token
-						});
-	        } else {
-				    connection.execute(
-				    	"INSERT INTO USUARIO (EMAIL, NOME) " + 
-				    	"VALUES (:email, :nome)",
-				    	[email, nome],
-				    	function(err, result) {
-				        if (err) {
-					        doRelease(connection);
-				        	res.status(500).json({email: 'Este e-mail já está cadastrado.'});
-				        	return;
-				        }
+            res.json({
+              token: token
+            });
+          } else {
+            connection.execute(
+              "INSERT INTO USUARIO (EMAIL, NOME) " + 
+              "VALUES (:email, :nome)",
+              [email, nome],
+              function(err, result) {
+                if (err) {
+                  doRelease(connection);
+                  res.status(500).json({email: 'Este e-mail já está cadastrado.'});
+                  return;
+                }
 
-						    connection.execute(
-						    	"SELECT ID " + 
-						    	"FROM USUARIO WHERE EMAIL = :email",
-						    	[email],
-						    	function(err, result) {
-					          doRelease(connection);
+                connection.execute(
+                  "SELECT ID " + 
+                  "FROM USUARIO WHERE EMAIL = :email",
+                  [email],
+                  function(err, result) {
+                    doRelease(connection);
 
-										var token = jwt.sign({
-											sub: result.rows[0][0],
-											exp: Math.floor(Date.now() / 1000) + (60 * 60)
-										}, config.secret);
+                    var token = jwt.sign({
+                      sub: result.rows[0][0],
+                      exp: Math.floor(Date.now() / 1000) + (60 * 60)
+                    }, config.secret);
 
-										res.json({
-											token: token
-										});
-						      });
-				    	});
-	        }
-				});
-	  });
-	});
+                    res.json({
+                      token: token
+                    });
+                  });
+              });
+          }
+        });
+    });
+  });
 });
 
 router.post('/register', function (req, res) {
-	var email = req.body.email;
-	var nome = req.body.nome;
-	var senha = req.body.senha;
-	var sexo = req.body.sexo;
-	var nascimento = req.body.nascimento;
-	var errors = {};
+  var email = req.body.email;
+  var nome = req.body.nome;
+  var senha = req.body.senha;
+  var sexo = req.body.sexo;
+  var nascimento = req.body.nascimento;
+  var errors = {};
 
-	if (!nome) {
-		errors.nome = 'É necessário preencher o nome.';
-	}
+  if (!nome) {
+    errors.nome = 'É necessário preencher o nome.';
+  }
 
-	if (!sexo || ['M', 'F'].indexOf(sexo) == -1) {
-		errors.sexo = 'É necessário preencher o sexo.';
-	}
+  if (!sexo || ['M', 'F'].indexOf(sexo) == -1) {
+    errors.sexo = 'É necessário preencher o sexo.';
+  }
 
-	if (nascimento) {
-		var dt = new Date(nascimento);
-		if (!dt) {
-			errors.nascimento = 'A data informado não é válida.';
-		} else if (getAge(nascimento) < 18) {
-			errors.nascimento = 'É necessário ter 18 anos ou mais para se cadastrar.';
-		}
-	} else {
-		errors.nascimento = 'É necessário preencher a data de nascimento.';
-	}
+  if (nascimento) {
+    var dt = new Date(nascimento);
+    if (!dt) {
+      errors.nascimento = 'A data informado não é válida.';
+    } else if (getAge(nascimento) < 18) {
+      errors.nascimento = 'É necessário ter 18 anos ou mais para se cadastrar.';
+    }
+  } else {
+    errors.nascimento = 'É necessário preencher a data de nascimento.';
+  }
 
-	if (!email) {
-		errors.email = 'É necessário preencher o e-mail.';
-	} else if (!isEmailValid(email)) {
-		errors.email = 'O e-mail informado não é válido.';	
-	}
+  if (!email) {
+    errors.email = 'É necessário preencher o e-mail.';
+  } else if (!isEmailValid(email)) {
+    errors.email = 'O e-mail informado não é válido.';  
+  }
 
-	if (!senha) {
-		errors.senha = 'É necessário preencher a senha.';
-	}
+  if (!senha) {
+    errors.senha = 'É necessário preencher a senha.';
+  }
 
-	if (Object.keys(errors).length > 0) {
-		res.status(500).json(errors);
-	} else {
-		oracledb.getConnection({
-			user          : config.user,
-			password      : config.password,
-			connectString : config.connectString
-		}, function(err, connection) {
-	    if (err) {
-	      console.error(err.message);
-	      return;
-	    }
+  if (Object.keys(errors).length > 0) {
+    res.status(500).json(errors);
+  } else {
+    oracledb.getConnection({
+      user          : config.user,
+      password      : config.password,
+      connectString : config.connectString
+    }, function(err, connection) {
+      if (err) {
+        console.error(err.message);
+        return;
+      }
 
-	    connection.execute(
-	    	"INSERT INTO USUARIO (EMAIL, NOME, SEXO, NASCIMENTO, SENHA) " + 
-	    	"VALUES (:email, :nome, :sexo, TO_DATE(:nascimento, 'dd/mm/yyyy'), :senha)",
-	    	[email, nome, sexo, nascimento, senha],
-	    	function(err, result) {
-	        if (err) {
-		        doRelease(connection);
-	        	res.status(500).json({email: 'Este e-mail já está cadastrado.'});
-	        	return;
-	        }
+      connection.execute(
+        "INSERT INTO USUARIO (EMAIL, NOME, SEXO, NASCIMENTO, SENHA) " + 
+        "VALUES (:email, :nome, :sexo, TO_DATE(:nascimento, 'dd/mm/yyyy'), :senha)",
+        [email, nome, sexo, nascimento, senha],
+        function(err, result) {
+          if (err) {
+            doRelease(connection);
+            res.status(500).json({email: 'Este e-mail já está cadastrado.'});
+            return;
+          }
 
-			    connection.execute(
-			    	"SELECT ID " + 
-			    	"FROM USUARIO WHERE EMAIL = :email",
-			    	[email],
-			    	function(err, result) {
-		          doRelease(connection);
+          connection.execute(
+            "SELECT ID " + 
+            "FROM USUARIO WHERE EMAIL = :email",
+            [email],
+            function(err, result) {
+              doRelease(connection);
 
-							var token = jwt.sign({
-								sub: result.rows[0][0],
-								exp: Math.floor(Date.now() / 1000) + (60 * 60)
-							}, config.secret);
+              var token = jwt.sign({
+                sub: result.rows[0][0],
+                exp: Math.floor(Date.now() / 1000) + (60 * 60)
+              }, config.secret);
 
-							res.json({
-								token: token
-							});
-			      });
-	    	});
-	  });
-	}
+              res.json({
+                token: token
+              });
+            });
+        });
+    });
+  }
 });
 
 function getAge(birthDateString) {
@@ -233,21 +233,21 @@ function getAge(birthDateString) {
   var age = today.getFullYear() - birthDate.getFullYear();
   var m = today.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-  	age--;
+    age--;
   }
   return age;
 }
 
 function isEmailValid(email) {
-	if (!email || !email.length) {
-		return false;
-	}
-	var re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-	return re.test(email);
+  if (!email || !email.length) {
+    return false;
+  }
+  var re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+  return re.test(email);
 }
 
 function renderError(res, message) {
-	res.status(500).json({message: message});
+  res.status(500).json({message: message});
 }
 
 function doRelease(connection) {

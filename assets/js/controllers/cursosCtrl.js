@@ -11,8 +11,8 @@ app.controller('CursosCtrl', ['Curso', 'toastr', 'TokenManager', '$state', 'toas
     });
 
   $ctrl.logout = function() {
-  	TokenManager.deleteToken();
-  	toastr.success('Sessão encerrada com sucesso.')
-  	$state.go('home');
+    TokenManager.deleteToken();
+    toastr.success('Sessão encerrada com sucesso.')
+    $state.go('home');
   }
 }]);

@@ -1,13 +1,13 @@
 app.controller('CadastroCtrl', ['Auth', 'TokenManager', 'toastr', '$state', function(Auth, TokenManager, toastr, $state) {
-	var $ctrl = this;
-	$ctrl.submitting = false;
-	$ctrl.errorMessage = {};
+  var $ctrl = this;
+  $ctrl.submitting = false;
+  $ctrl.errorMessage = {};
 
-	$ctrl.usuario = {
-		sexo: null
-	};
+  $ctrl.usuario = {
+    sexo: null
+  };
 
-	$ctrl.cadastrar = function() {
+  $ctrl.cadastrar = function() {
     $ctrl.submitting = true;
     Auth.register($ctrl.usuario)
       .then(function(response) {
@@ -17,11 +17,11 @@ app.controller('CadastroCtrl', ['Auth', 'TokenManager', 'toastr', '$state', func
       })
       .catch(function(response) {
         $ctrl.submitting = false;
-				$ctrl.errorMessage = {};
-				angular.forEach(response.data, function(message, field) {
-					$ctrl.form[field].$setValidity('server', false);
-					$ctrl.errorMessage[field] = message;
-				});
+        $ctrl.errorMessage = {};
+        angular.forEach(response.data, function(message, field) {
+          $ctrl.form[field].$setValidity('server', false);
+          $ctrl.errorMessage[field] = message;
+        });
       });
-	}
+  }
 }]);
