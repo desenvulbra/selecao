@@ -9,6 +9,7 @@
     "@uirouter/angularjs": "^1.0.5",
     "angular": "^1.6.5",
     "angular-animate": "^1.6.5",
+    "angular-i18n": "^1.6.5",
     "angular-input-masks": "^2.6.0",
     "angular-messages": "^1.6.5",
     "angular-toastr": "^2.1.1",

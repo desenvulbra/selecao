@@ -21,5 +21,11 @@ var app = angular.module('ulbra', [
       templateUrl: '/views/cursos.html',
       controller: 'CursosCtrl',
       controllerAs: '$ctrl'
+    })
+    .state('cadastro', {
+      url: '/cadastro',
+      templateUrl: '/views/cadastro.html',
+      controller: 'CadastroCtrl',
+      controllerAs: '$ctrl'
     });
 }]);

@@ -41,6 +41,7 @@
 }
 
 .validation-error {
+    margin-bottom: 0;
     background: #c76a6a;
     color: #fff;
     padding: 5px;

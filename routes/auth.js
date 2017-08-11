@@ -112,7 +112,7 @@ router.post('/register', function (req, res) {
 
 	    connection.execute(
 	    	"INSERT INTO USUARIO (EMAIL, NOME, SEXO, NASCIMENTO, SENHA) " + 
-	    	"VALUES (:email, :nome, :sexo, TO_DATE(:nascimento, 'yyyy-mm-dd'), :senha)",
+	    	"VALUES (:email, :nome, :sexo, TO_DATE(:nascimento, 'dd/mm/yyyy'), :senha)",
 	    	[email, nome, sexo, nascimento, senha],
 	    	function(err, result) {
 	        if (err) {

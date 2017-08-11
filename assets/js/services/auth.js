@@ -6,5 +6,8 @@ app.factory('Auth', ['$http', function($http) {
         senha: senha
       });
     },
+    register: function(usuario) {
+    	return $http.post('/auth/register', usuario);
+    }
   };
 }]);
