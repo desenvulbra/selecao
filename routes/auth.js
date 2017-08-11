@@ -227,7 +227,6 @@ router.post('/register', function (req, res) {
 	}
 });
 
-// https://stackoverflow.com/questions/14231381/to-check-if-age-is-not-less-than-13-years-in-javascript
 function getAge(birthDateString) {
   var today = new Date();
   var birthDate = new Date(birthDateString);
