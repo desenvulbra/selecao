@@ -5,28 +5,53 @@ var app = angular.module('ulbra', [
   'toastr',
   'ui.utils.masks',
   'ngMd5'
-]).config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
+])
+.run(['$rootScope', 'TokenManager', '$state', 'toastr', '$transitions', function($rootScope, TokenManager, $state, toastr, $transitions) {
+  $transitions.onBefore({}, function(trans) {
+    var isProtected = trans.$to().self.auth;
+
+    if (!TokenManager.isAuthenticated() && isProtected) {
+      event.preventDefault();
+      toastr.error('Acesso negado.', 'Ops!');
+      $state.go('home');
+      return false;
+    }
+
+    if (TokenManager.isAuthenticated() && !isProtected) {
+      event.preventDefault();
+      toastr.error('Acesso negado.', 'Ops!');
+      $state.go('cursos');
+      return false;
+    }
+
+    return true;
+  });
+}])
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
 
   $httpProvider.interceptors.push('AuthInterceptor');
 
   $stateProvider
     .state('home', {
-      url: '',
+      url: '/',
       templateUrl: '/views/home.html',
       controller: 'HomeCtrl',
-      controllerAs: '$ctrl'
-    })
-    .state('cursos', {
-      url: '/cursos',
-      templateUrl: '/views/cursos.html',
-      controller: 'CursosCtrl',
-      controllerAs: '$ctrl'
+      controllerAs: '$ctrl',
+      auth: false
     })
     .state('cadastro', {
       url: '/cadastro',
       templateUrl: '/views/cadastro.html',
       controller: 'CadastroCtrl',
-      controllerAs: '$ctrl'
+      controllerAs: '$ctrl',
+      auth: false
+    })
+    .state('cursos', {
+      url: '/cursos',
+      templateUrl: '/views/cursos.html',
+      controller: 'CursosCtrl',
+      controllerAs: '$ctrl',
+      auth: true
     });
 }]);

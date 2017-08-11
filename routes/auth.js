@@ -48,7 +48,8 @@ router.post('/login', function (req, res, next) {
 					}
 
 					var token = jwt.sign({
-						sub: usuario[0]
+						sub: usuario[0],
+						exp: Math.floor(Date.now() / 1000) + (60 * 60)
 					}, config.secret);
 
 					res.json({
@@ -131,7 +132,8 @@ router.post('/register', function (req, res) {
 		          doRelease(connection);
 
 							var token = jwt.sign({
-								sub: result.rows[0][0]
+								sub: result.rows[0][0],
+								exp: Math.floor(Date.now() / 1000) + (60 * 60)
 							}, config.secret);
 
 							res.json({

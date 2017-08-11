@@ -42,9 +42,7 @@ gulp.task('compile', [
 
 gulp.task('watch', function() {
   return gulp.watch(['assets/js/**/*.js'], [
-    'scripts' ,
-    'vendor-js', 
-    'vendor-css'
+    'scripts'
   ]);
 });
 
