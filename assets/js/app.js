@@ -27,8 +27,10 @@ var app = angular.module('ulbra', [
     return true;
   });
 }])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
+
+  $locationProvider.html5Mode(true),
 
   $httpProvider.interceptors.push('AuthInterceptor');
 

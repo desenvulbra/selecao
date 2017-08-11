@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
 var cursos = require('./routes/cursos');
 var auth = require('./routes/auth');
 var config = require('./config');
@@ -24,9 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
 app.use('/cursos', cursos);
 app.use('/auth', auth);
+app.all('/*', function(req, res, next) {
+	res.render('index');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
