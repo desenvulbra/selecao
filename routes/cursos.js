@@ -1,12 +1,14 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
+var oracledb = require('oracledb');
+var config = require('../config');
 var router = express.Router();
 
 router.use(function(req, res, next) {
 	var token = req.headers['authorization'];
 
 	if (token) {
-		jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+		jwt.verify(token, config.secret, function(err, decoded) {
 			if (err) {
 				res.status(403).send({
 					message: 'Falha na autenticação.'
@@ -24,15 +26,38 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-	var cursos = {
-		items: [
-			{id: '3c177aa7ab62fc701ff7768a32c8d283', curso: 'Oracle'},				
-			{id: '236f700633eda0d2097915fe9a4d952b', curso: 'AngularJS'},
-			{id: '30229b9151c6cc4f9a6a67a7a58ce67b', curso: 'NodeJS'},
-			{id: 'a4ea90406d44c16561ba406c1d6a65ed', curso: 'PL/SQL'}
-		]
-	};
-	res.json(cursos);
+	oracledb.getConnection({
+		user          : config.user,
+		password      : config.password,
+		connectString : config.connectString
+	}, function(err, connection) {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+
+    connection.execute(
+    	"SELECT * FROM CURSO",
+    	{},
+    	{ outFormat: oracledb.OBJECT },
+    	function(err, result) {
+        if (err) {
+          doRelease(connection);
+		      console.error(err.message);
+		      return;
+        }
+
+        res.json(result.rows);
+    	});
+  });
 });
+
+function doRelease(connection) {
+  connection.close(function(err) {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+}
 
 module.exports = router;

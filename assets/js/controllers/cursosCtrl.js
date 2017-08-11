@@ -4,7 +4,7 @@ app.controller('CursosCtrl', ['Curso', 'toastr', function(Curso, toastr) {
   $ctrl.cursos = [];
   Curso.obterCursos()
     .then(function(response) {
-      $ctrl.cursos = response.data.items;
+      $ctrl.cursos = response.data;
     })
     .catch(function() {
       toastr.error('Falha ao carregar os cursos.');
