@@ -48,6 +48,7 @@
             <div class="col-lg-12">
                 <input type="password" class="form-control m-t-10" name="confirmar_senha" ng-model="$ctrl.usuario.confirmar_senha" placeholder="Repita a senha" compare-to="$ctrl.usuario.senha" required>
                 <div class="help-block validation-error" ng-if="$ctrl.form.confirmar_senha.$invalid && $ctrl.form.confirmar_senha.$dirty" ng-messages="$ctrl.form.confirmar_senha.$error">
+                    <div ng-message="required">É necessário preencher a senha</div>
                     <div ng-message="compareTo">As senhas não são iguais</div>
                 </div>
             </div>

@@ -12,7 +12,8 @@ gulp.task('vendor-js', function() {
     './node_modules/angular-sanitize/angular-sanitize.js',
     './node_modules/angular-toastr/dist/angular-toastr.tpls.js',
     './node_modules/angular-input-masks/releases/angular-input-masks-standalone.js',
-    './node_modules/angular-i18n/angular-locale_pt-br.js'
+    './node_modules/angular-i18n/angular-locale_pt-br.js',
+    './node_modules/angular-md5/angular-md5.js'
   ]).pipe(concat('vendor.js'))
     .pipe(uglify())
     .pipe(gulp.dest('public/js/'))

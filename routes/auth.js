@@ -33,8 +33,9 @@ router.post('/login', function (req, res, next) {
     	[email],
     	function(err, result) {
         if (err) {
-          doRelease(connection);
-          res.end();
+        	doRelease(connection);
+					renderError(res, 'E-mail ou senha estão incorretos.');
+					return;
         }
 
         if (result && result.rows.length > 0) {
@@ -43,6 +44,7 @@ router.post('/login', function (req, res, next) {
 					if (usuario[1] != senha) {
 	        	doRelease(connection);
 						renderError(res, 'E-mail ou senha estão incorretos.');
+						return;
 					}
 
 					var token = jwt.sign({

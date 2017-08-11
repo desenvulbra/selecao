@@ -3,7 +3,8 @@ var app = angular.module('ulbra', [
   'ngMessages',
   'ui.router',
   'toastr',
-  'ui.utils.masks'
+  'ui.utils.masks',
+  'ngMd5'
 ]).config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
 
