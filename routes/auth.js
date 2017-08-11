@@ -3,6 +3,7 @@ var jwt = require('jsonwebtoken');
 var oracledb = require('oracledb');
 var config = require('../config');
 var router = express.Router();
+var GoogleAuth = require('google-auth-library');
 oracledb.autoCommit = true;
 
 router.post('/login', function (req, res, next) {
@@ -61,6 +62,87 @@ router.post('/login', function (req, res, next) {
         }
     	});
   });
+});
+
+router.post('/google-signin', function(req, res) {
+	var auth = new GoogleAuth;
+	var client = new auth.OAuth2(config.clientId, '', '');
+	client.verifyIdToken(req.body.token, config.clientId, function(e, login) {
+		if (e) {
+			renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.');	
+			return;
+		}
+		var payload = login.getPayload();
+		var userid = payload['sub'];
+		var email = 'googleSignIn#' + payload['email'];
+		var nome = payload['name'];
+
+		oracledb.getConnection({
+			user          : config.user,
+			password      : config.password,
+			connectString : config.connectString
+		}, function(err, connection) {
+	    if (err) {
+	      console.error(err.message);
+	      return;
+	    }
+
+	    connection.execute(
+	    	"SELECT ID " + 
+	    	"FROM USUARIO WHERE EMAIL = :email",
+	    	[email],
+	    	function(err, result) {
+	        if (err) {
+	        	doRelease(connection);
+						renderError(res, 'Ocorreu um erro ao fazer login. Tente novamente.');
+						return;
+	        }
+
+	        if (result && result.rows.length > 0) {
+	        	doRelease(connection);
+	        	var usuario = result.rows[0];
+
+						var token = jwt.sign({
+							sub: usuario[0],
+							exp: Math.floor(Date.now() / 1000) + (60 * 60)
+						}, config.secret);
+
+						res.json({
+							token: token
+						});
+	        } else {
+				    connection.execute(
+				    	"INSERT INTO USUARIO (EMAIL, NOME) " + 
+				    	"VALUES (:email, :nome)",
+				    	[email, nome],
+				    	function(err, result) {
+				        if (err) {
+					        doRelease(connection);
+				        	res.status(500).json({email: 'Este e-mail já está cadastrado.'});
+				        	return;
+				        }
+
+						    connection.execute(
+						    	"SELECT ID " + 
+						    	"FROM USUARIO WHERE EMAIL = :email",
+						    	[email],
+						    	function(err, result) {
+					          doRelease(connection);
+
+										var token = jwt.sign({
+											sub: result.rows[0][0],
+											exp: Math.floor(Date.now() / 1000) + (60 * 60)
+										}, config.secret);
+
+										res.json({
+											token: token
+										});
+						      });
+				    	});
+	        }
+				});
+	  });
+	});
 });
 
 router.post('/register', function (req, res) {

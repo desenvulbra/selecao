@@ -23,8 +23,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/cursos', cursos);
-app.use('/auth', auth);
+app.use('/api/cursos', cursos);
+app.use('/api/auth', auth);
 app.all('/*', function(req, res, next) {
 	res.render('index');
 });
