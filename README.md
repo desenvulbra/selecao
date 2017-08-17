@@ -43,6 +43,8 @@ O que esperamos que seja desenvolvido:
 2)	Uma página para que o usuário possa se cadastrar na plataforma
 3)	Uma página para apresentar os cursos disponíveis para o usuário, após o usuário entrar na plataforma
 
+O projeto deve ser desenvolvido em Windows.
+
 ### Início
 
 Faça o fork do desafio
