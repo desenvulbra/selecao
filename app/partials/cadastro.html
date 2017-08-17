@@ -1,0 +1,68 @@
+<div ng-controller="CadastroController" class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 cx-login">
+    <toaster-container></toaster-container>
+    <div class="center">
+        <img src="images/logo.png" />
+    </div>
+    <!-- Formulário -->
+    <form name="formulario" ng-submit="cadastro.cadastrar()">
+
+        <!-- Nome -->
+        <div class="form-group" ng-class="{'has-error has-feedback': formulario.nome.$dirty && formulario.nome.$invalid, 'has-success has-feedback': formulario.nome.$dirty && formulario.nome.$valid  }">
+            <input class="form-control" ng-disabled="enviando" required name="nome" ng-model="cadastro.nome" placeholder="Nome Completo" ng-pattern="/^[a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*( [a-záàâãéèêíïóôõöúçñ]([-']?[a-záàâãéèêíïóôõöúçñ]+)*)+$/i" onfocus="this.removeAttribute('readonly');" readonly />
+            <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.nome.$dirty && formulario.nome.$invalid, 'glyphicon-ok': formulario.nome.$dirty && formulario.nome.$valid  }"></span>
+            <span class="help-block" ng-show="(formulario.nome.$dirty && formulario.nome.$invalid && !formulario.nome.$viewValue.length)">Este campo é obrigatório.</span>
+            <span class="help-block" ng-show="(formulario.nome.$dirty && formulario.nome.$invalid && formulario.nome.$viewValue.length > 0)">Digite o seu nome completo.</span>
+        </div>
+
+        <div class="row">
+            <!-- Sexo -->
+            <div class="form-group col-lg-6 col-md-6 col-sm-6" ng-class="{'has-error has-feedback': formulario.sexo.$dirty && formulario.sexo.$invalid, 'has-success has-feedback': formulario.sexo.$dirty && formulario.sexo.$valid  }">
+                <select class="form-control" ng-disabled="enviando" required name="sexo" ng-model="cadastro.sexo" >
+                    <option value="" selected="selected" disabled="disabled">Sexo</option>
+                    <option value="F">Feminino</option>
+                    <option value="M">Masculino</option>
+                </select>
+                <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.sexo.$dirty && formulario.sexo.$invalid, 'glyphicon-ok': formulario.sexo.$dirty && formulario.sexo.$valid  }"></span>
+            </div>
+
+            <!-- Nascimento -->
+            <div class="form-group col-lg-6 col-md-6 col-sm-6" ng-class="{'has-error has-feedback': formulario.nascimento.$dirty && !cadastro.nascValido, 'has-success has-feedback': formulario.nascimento.$dirty && cadastro.nascValido  }">
+                <input class="form-control" ng-disabled="enviando" required name="nascimento" ng-model="cadastro.nascimento" placeholder="Data nascimento" type="text" clean="false" mask="39/19/9999" ng-change="cadastro.idade()" onfocus="this.removeAttribute('readonly');" readonly />
+                <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.nascimento.$dirty && !cadastro.nascValido, 'glyphicon-ok': formulario.nascimento.$dirty && cadastro.nascValido  }"></span>
+                <span class="help-block" ng-show="(formulario.nascimento.$dirty && !cadastro.nascValido && !formulario.nascimento.$viewValue.length)">Este campo é obrigatório.</span>
+                <span class="help-block" ng-show="(formulario.nascimento.$dirty && !cadastro.nascValido && formulario.nascimento.$viewValue.length === 10)">Apenas maiores de idade podem se cadastrar.</span>
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group" ng-class="{'has-error has-feedback': formulario.email.$dirty && formulario.email.$invalid, 'has-success has-feedback': formulario.email.$dirty && formulario.email.$valid  }">
+            <input class="form-control" ng-disabled="enviando" required name="email" ng-model="cadastro.email" placeholder="E-mail" ng-pattern='/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' onfocus="this.removeAttribute('readonly');" readonly />
+            <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.email.$dirty && formulario.email.$invalid, 'glyphicon-ok': formulario.email.$dirty && formulario.email.$valid  }"></span>
+            <span class="help-block" ng-show="(formulario.email.$dirty && formulario.email.$invalid && !formulario.email.$viewValue.length)">Este campo é obrigatório.</span>
+            <span class="help-block" ng-show="(formulario.email.$dirty && formulario.email.$invalid && formulario.email.$viewValue.length > 0)">Informe um endereço de e-mail válido.</span>
+        </div>
+
+        <!-- Senha -->
+        <div class="form-group" ng-class="{'has-error has-feedback': formulario.password.$dirty && formulario.password.$invalid, 'has-success has-feedback': formulario.password.$dirty && formulario.password.$valid  }">
+            <input class="form-control" ng-disabled="enviando" required name="password" ng-model="cadastro.password" placeholder="Senha" type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" onfocus="this.removeAttribute('readonly');" readonly />
+            <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.password.$dirty && formulario.password.$invalid, 'glyphicon-ok': formulario.password.$dirty && formulario.password.$valid  }"></span>
+            <span class="help-block" ng-show="(formulario.password.$dirty && formulario.password.$invalid && !formulario.password.$viewValue.length)">Este campo é obrigatório.</span>
+            <span class="help-block" ng-show="(formulario.password.$dirty && formulario.password.$invalid && formulario.password.$viewValue.length > 0)">Digite ao menos 8 caracteres, uma letra maiúscula e 1 número.</span>
+        </div>
+
+        <!-- Confirmação -->
+        <div class="form-group" ng-class="{'has-error has-feedback': formulario.confirmacao.$dirty && !cadastro.confValido, 'has-success has-feedback': formulario.confirmacao.$dirty && cadastro.confValido  }">
+            <input class="form-control" ng-disabled="enviando" required name="confirmacao" ng-model="cadastro.confirmacao" placeholder="Repita a senha" type="password" ng-change="cadastro.confirma()" />
+            <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-remove': formulario.confirmacao.$dirty && !cadastro.confValido, 'glyphicon-ok': formulario.confirmacao.$dirty && cadastro.confValido  }"></span>
+            <span class="help-block" ng-show="(formulario.confirmacao.$dirty && !cadastro.confValido && !formulario.confirmacao.$viewValue.length)">Este campo é obrigatório.</span>
+            <span class="help-block" ng-show="(formulario.confirmacao.$dirty && !cadastro.confValido && formulario.confirmacao.$viewValue.length > 0)">A confirmação deve coincidir com a senha.</span>
+        </div>
+
+        <!-- Botões -->
+        <button ui-sref="login" type="button" class="col-lg-5 btn btn-default btn-login">Voltar</button>
+        <button ng-disabled="formulario.$invalid || enviando" type="submit" class="f-r col-lg-5 btn btn-default btn-login">Concluir</button>
+
+    </form>
+    <br/>
+    <br/>
+</div>

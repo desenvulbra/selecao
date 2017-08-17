@@ -1,0 +1,22 @@
+<div ng-controller="CursosController" class="row">
+    <div class="center logo-topo">
+        <img src="images/logo.png" width="50px" />
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <!-- Para cada curso... -->
+        <div ng-repeat="curso in $resolve.listaCursos.data.items track by curso.id">
+            <a href="#" onclick="return false">
+                <div class="col-sm-3 col-xs-6">
+                    <div class="curso">{{curso.curso}}</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+<div class="row text-center">
+    <a ui-sref="sair" class="btn btn-primary">Sair</a>
+</div>
