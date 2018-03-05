@@ -6,16 +6,16 @@
 
 ___
 
-# Seleção para Analista de Sistemas Web 2017
+# Seleção para Programador Pleno 2018
 
 ## Processo de recrutamento
 
-Olá, pronto para participar do nosso processo de recrutamento para vaga de Analista de Sistemas/Desenvolvedor (CLT)?
+Olá, pronto para participar do nosso processo de recrutamento para vaga de Programador Pleno (CLT)?
 
 ### Sobre a Vaga
 
 - Empresa: ULBRA
-- Cargo: Analista de Sistemas/Desenvolvedor (CLT);
+- Cargo: Programador Pleno (CLT);
 - Salário compatível com a função
 - Horário: 08:00h às 12:00h – 13:00h às 17:48h (de segunda a sexta)
 - Refeitório no local
@@ -155,11 +155,11 @@ com o máximo de detalhes possível do que foi feito e a documentação da API R
 2)	Os scripts de criação da tabela USUARIO e do procedimento de criação de ID do usuário 
 no banco de dados devem estar contidos no projeto
 3)	Após concluir faça um pull request
-5)	Envie um e-mail para vagasulbrati@ulbra.br com o assunto “Atividade de seleção para Analista de Sistemas” 
+5)	Envie um e-mail para vagasulbrati@ulbra.br com o assunto “Atividade de seleção para Programador Pleno” 
 com seu currículo, pretensão salarial e o link do seu pull request
 
 __
 
 Qualquer dúvida entre em contato com nossa equipe pelo e-mail vagasulbrati@ulbra.br 
-com o assunto “Dúvidas atividade de seleção para Analista de Sistemas”.
+com o assunto “Dúvidas atividade de seleção para Programador Pleno”.
 
