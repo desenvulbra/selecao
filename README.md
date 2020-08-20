@@ -147,7 +147,7 @@ com o máximo de detalhes possível do que foi feito e a documentação da API R
 no banco de dados devem estar contidos no projeto
 3)	Após concluir faça um pull request
 5)	Envie um e-mail para vagasulbrati@aelbra.com.br com o assunto “Atividade de seleção para Desenvolvedor WEB” 
-com seu currículo, pretensão salarial e o link do seu pull request
+com o link do seu pull request
 
 __
 
